@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.wordpress.dpname }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.wordpress.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.wordpress.name }}
+    spec:
+      containers:
+      - name: {{ .Values.wordpress.name }}
+        image: {{ .Values.wpimage.name }}:{{ .Values.wpimage.tag }}
+        ports:
+        - name: {{ .Values.wpport.name }}
+          containerPort: {{ .Values.wpport.port }}
+        env:
+          - name: {{ .Values.wordpressenv.name}}
+            valueFrom:
+              secretKeyRef:
+                name: wordpress-secrets
+                key: db-password
+          - name: {{ .Values.wordpresshost.name }}
+            value: {{ .Values.wordpresshost.sqldbname }}

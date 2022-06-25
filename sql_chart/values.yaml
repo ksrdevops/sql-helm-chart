@@ -1,0 +1,41 @@
+dbname:
+  name: wordpress-db
+
+image:
+  name: mysql
+  tag: 5.7
+
+mysqlenv:
+  name: MYSQL_ROOT_PASSWORD
+
+mysqlport:
+  name: mysql-port
+  containerport: 3306
+
+sqlsvc:
+  name: wordpress-db
+  port: 3306
+  type: NodePort
+
+
+wordpress:
+  dpname: wordpress-deployment
+  name: wordpress
+wpimage:
+  name: wordpress
+  tag: 5.2-php7.1
+wpport:
+  name: http-port
+  port: 80 
+wordpressenv:
+  name: WORDPRESS_DB_PASSWORD
+wordpresshost:
+  name: WORDPRESS_DB_HOST
+  sqldbname: wordpress-db
+
+
+wordpresssc:
+  name: wordpress
+  port: 80
+  targetport: http-port
+  type: LoadBalancer

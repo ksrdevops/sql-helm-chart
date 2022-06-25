@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.wordpresssc.name }}
+spec:
+  ports:
+  - port: {{ .Values.wordpresssc.port }}
+    targetPort: {{ .Values.wordpresssc.targetport }}
+    protocol: TCP
+  selector:
+    app: {{ .Values.wordpresssc.name}}
+  type: {{ .Values.wordpresssc.type}}

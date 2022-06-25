@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: {{ .Values.dbname.name }}
+spec:
+  replicas: 1
+  selector:
+    app: {{ .Values.dbname.name }}
+  template:
+    metadata:
+      name: {{ .Values.dbname.name }}
+      labels:
+        app: {{ .Values.dbname.name }}
+    spec:
+      containers:
+      - name: {{ .Values.image.name }}
+        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+        args:
+          - "--ignore-db-dir=lost+found"
+        ports:
+        - name: {{ .Values.mysqlport.name }}
+          containerPort: {{ .Values.mysqlport.containerport }}
+        env:
+          - name: {{ .Values.mysqlenv.name }}
+            valueFrom:
+              secretKeyRef:
+                name: wordpress-secrets
+                key: db-password
